@@ -1,67 +1,406 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <base target="_top">
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>บันทึกไมล์ออก</title>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
-   </head>
-
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บันทึกไมล์ออก</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js" crossorigin="anonymous"></script>
  
- <style>
- @import url('https://fonts.googleapis.com/css?family=Prompt:400,700&display=swap');
-body{
- 
-  font-family: 'Prompt', sans-serif;
-}
-</style>
-   <body>
-<!--        <div class="container">
-        <div class="text">
-           ระบบจองรถ
-         </div>
-        </div> -->
-	
-    <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" src="https://script.google.com/macros/s/AKfycbzW_s0DWhPLwmxB0LMyCGOd7o-At8_8eDZQX7IPrTaGkVpmkAsyr2KfIIjT2OVokjMq/exec" align="center">
-		    </iframe>
-		   	    <script>
-  // $(window).load(function() {
-  //   $('#loading').hide();
-  // });
- $.LoadingOverlaySetup({
-   //image  : "",
-   background  : "#0d6efd",
-  text        : "บันทึกไมล์ออก",
-  textColor        : "#ffffff",
-  textResizeFactor  : "0.50",
-   size :"20",
-  maxSize :"60",
-  minSize :"20",
-  imageColor : "#ffffff"
-   
-    
-});
-				    
- $.LoadingOverlay("show");
+  <style>
+    body {
+      font-family: "Prompt", sans-serif;
+      font-weight: bold;
+      font-size: 12px;
+      background-color: #f8f9fa;
+    }
+    .spinner-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%; 
+    } 
+    .modal-content {
+      border-radius: 10px; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    #data-tablemileout th {
+      background-color: #0d6efd; /* สีเฮดเดอร์datatable */
+      color: #ffffff; /* สีข้อความในเฮดเดอร์datatable */
+    }
+    .form-control {
+      border-radius: 5px;
+      border: 1px solid #ced4da;
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+    }
+    .btn-primary:hover, .btn-secondary:hover {
+      opacity: 0.9;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    .table-hover tbody tr:hover {
+      background-color: rgba(0, 0, 0, 0.075);
+    }
+  </style>
+</head>
 
-// Hide it after 3 seconds
-setTimeout(function(){
-    $.LoadingOverlay("hide");
-}, 4000);
+<body>
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="editModalLabel">บันทึกไมล์ออก</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="myFormsave" onsubmit="saveChangesToSpreadsheet(event)" class="row g-2">
+            <input type="text" class="form-control" id="editId" readonly hidden>
+            <div class="col-12 col-md-6 mb-2">
+              <label for="editNamebook" class="form-label">ชื่อผู้จอง</label>
+              <input type="text" class="form-control" id="editNamebook" name="editNamebook" style="color:blue;">
+            </div>
+            <div class="col-6 col-md-6 mb-2">
+              <label for="editDepbook" class="form-label">แผนก</label>
+              <input type="text" class="form-control" id="editDepbook" name="editDepbook" style="color:blue;">
+            </div>
+            <div class="col-6 col-md-6 mb-2">
+              <label for="editCarbook" class="form-label">รถที่จอง</label>
+              <input type="text" class="form-control" id="editCarbook" name="editCarbook" style="color:blue;">
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+              <label for="editLocabook" class="form-label">สถานที่ๆไปติดต่อ</label>
+              <input type="text" class="form-control" id="editLocabook" name="editLocabook" style="color:blue;">
+            </div>
+            <input type="date" class="form-control" id="editDateoutbook" name="editDateoutbook" style="display: none;">
+            <input type="text" class="form-control" id="editTimeoutbook" name="editTimeoutbook" style="display: none;">
+            <input type="date" class="form-control" id="editDateinbook" name="editDateinbook" style="display: none;">
+            <input type="text" class="form-control" id="editTimeinbook" name="editTimeinbook" style="display: none;">
+            <input type="text" class="form-control" id="editDrivebook" name="editDrivebook" style="display: none;">
+            <input type="text" class="form-control" id="editStatusbook" name="editStatusbook" value="กำลังใช้งาน" style="display: none;">
+            <input type="text" class="form-control" id="editApproverbook" name="editApproverbook" style="display: none;">
+            <div class="col-6 col-md-6 mb-2">
+              <label for="editDateout" class="form-label">วันที่ออก</label>
+              <input type="date" class="form-control" id="editDateout" name="editDateout" style="color:blue;">
+            </div>
+            <div class="col-6 col-md-6 mb-2">
+              <label for="editTimeout" class="form-label">เวลาออก</label>
+              <input type="time" class="form-control" id="editTimeout" name="editTimeout" style="color:blue;">
+            </div>
+            <div class="col-6 col-md-6 mb-2">
+              <label for="editMileout" class="form-label">เลขไมล์ออก</label>
+              <input type="tel" class="form-control" id="editMileout" name="editMileout" style="color:blue;">
+            </div>
+            <div class="col-6 col-md-6 mb-2">
+              <label for="editDriver" class="form-label">ชื่อคนขับ</label>
+              <input type="text" class="form-control" id="editDriver" name="editDriver" list="list" style="color:blue;" required>
+              <datalist id="list">
+                <option value=''></option>
+                <option value="นงคราญ เสมอเชื้อ">นงคราญ เสมอเชื้อ</option>
+                <option value="ภาคภูมิ เรือนมูล">ภาคภูมิ เรือนมูล</option>
+                <option value="สายสุนีย์ พุทธโส">สายสุนีย์ พุทธโส</option>
+                <option value="คเชนทร์ ธรรมชัย">คเชนทร์ ธรรมชัย</option>
+                <option value="ศรีพรรณ บุญเลา">ศรีพรรณ บุญเลา</option>
+                <option value="กันทิมา สินธุผัด">กันทิมา สินธุผัด</option>
+                <option value="กฤษฎิ์ณิชา วิภาษา">กฤษฎิ์ณิชา วิภาษา</option>
+                <option value="พิชยา พรรณะพัฒน์">พิชยา พรรณะพัฒน์</option>
+                <option value="ลิขิต ฉาดฉาน">ลิขิต ฉาดฉาน</option>
+                <option value="อัมรินทร์ ศิรินานุวัฒน์">อัมรินทร์ ศิรินานุวัฒน์</option>
+                <option value="ทนุจิต ผัดเจริญ">ทนุจิต ผัดเจริญ</option>
+                <option value="ณัฏฐ์วรัตถ์ พรมเขียว">ณัฏฐ์วรัตถ์ พรมเขียว</option>
+                <option value="อาภรณ์ นันทไชย">อาภรณ์ นันทไชย</option>
+                <option value="ชัยวัฒก์ ตรียานุรักษ์">ชัยวัฒก์ ตรียานุรักษ์</option>
+                <option value="กนกรัชต์ เมืองแก่น">กนกรัชต์ เมืองแก่น</option>
+                <option value="ธรรมรัตณ์ เจริญสันติ">ธรรมรัตณ์ เจริญสันติ</option>
+                <option value="ธีระพงศ์ พรหมวังค์">ธีระพงศ์ พรหมวังค์</option>
+                <option value="ปวีณา เหมืองจา">ปวีณา เหมืองจา</option>
+                <option value="พนัชกร สุขแยง">พนัชกร สุขแยง</option>
+                <option value="ชนิกานต์  ใจคำ">ชนิกานต์ ใจคำ</option>
+                <option value="วริศรา เก่งการค้า">วริศรา เก่งการค้า</option>
+                <option value="วิทยา กำลังเก่ง">วิทยา กำลังเก่ง</option>
+                <option value="อภิเดช กุลประยงค์">อภิเดช กุลประยงค์</option>
+                <option value="วัชรกร ศรีวะอุไร">วัชรกร ศรีวะอุไร</option>
+                <option value="วิเชียร แสนวังทอง">วิเชียร แสนวังทอง</option>
+                <option value="สรศักดิ์ ต้องใจ">สรศักดิ์ ต้องใจ</option>
+                <option value="ณัทจันโสม ชัยเมืองเลน">ณัทจันโสม ชัยเมืองเลน</option>
+                <option value="จตุพร สิทธิพงศ์">จตุพร สิทธิพงศ์</option>
+                <option value="พารีดา ชูวุฒยากร">พารีดา ชูวุฒยากร</option>
+                <option value="สุกัญญา ศรีสุวรรณ">สุกัญญา ศรีสุวรรณ</option>
+                <option value="สำราญ บุญหมื่น">สำราญ บุญหมื่น</option>
+                <option value="จาฬุพร อินวงศ์">จาฬุพร อินวงศ์</option>
+                <option value="มัธติกาล บุญโทย">มัธติกาล บุญโทย</option>
+                <option value="สุชาติ กันคำ">สุชาติ กันคำ</option>
+              </datalist>
+            </div>
+            <div class="col-12 col-md-12 mb-2">
+              <label for="editOtherbook" class="form-label">อื่นๆ</label>
+              <input type="text" class="form-control" id="editOtherbook" name="editOtherbook" style="color:blue;">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" onclick="saveChangesToSpreadsheet(event)">บันทึกข้อมูล</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid mt-4">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h5 class="card-title mb-0">แบบฟอร์มบันทึกไมล์ออก</h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="data-tablemileout" class="table table-striped table-hover table-bordered" style="width:100%">
+            <thead class="bg-secondary text-white"></thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<br>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/sheetrock@1.2.0/dist/sheetrock.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script>
+    // ดึงเวลาปัจจุบันขึ้นมาแสดง
+    var now = new Date();
+    var hours = String(now.getHours()).padStart(2, '0');
+    var minutes = String(now.getMinutes()).padStart(2, '0');
+    var currentTimeuser = hours + ':' + minutes;
+    document.getElementById('editTimeout').value = currentTimeuser;
+
+    var googleScriptUrl = 'https://script.google.com/macros/s/AKfycby0jO4fOnWp2QJ--cStN6NNm4rhW-FYK0SRyCrlr7PrJMHRnKOuc-0DyXjwsu17-3FoVw/exec'; // ใส่ URL ของ Google Apps Script ที่คุณสร้าง
+    var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/1JXBX3BUeCMyFvAIZQwjd_LDLVhhnxq4RmP6N37Pgokw/edit?gid=1993286433#gid=1993286433';
+
+    $(document).ready(function() {
+      $('#data-tablemileout').html('<div class="spinner-container" id="hidespinner"><div class="spinner-border text-info me-2" style="width: 40px; height: 40px;" role="status"></div> กำลังโหลดข้อมูลไมล์ออก...</div>');
+
+      $('#data-tablemileout').sheetrock({
+        url: mySpreadsheet,
+        query: ("select A,B,C,D,E,F,G,H,I,J,K,L,M,N offset 0"),
+      }).on('sheetrock:loaded', function () {
+        $('#hidespinner').hide();
+        $(this).DataTable({
+          dom: 't',
+          info: true,
+          responsive: true,
+          lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "all"]],
+          order: [[5, 'asc'], [6, 'asc']],
+          destroy: true,
+          columnDefs: [
+            {targets: [1,4,5,6, 13], className: 'all'},
+          ],
+          columns: [
+            { title: "ไอดี" },
+            { title: "ชื่อผู้จอง" },
+            { title: "แผนก" },
+            { title: "รถที่จอง" },
+            { title: "สถานที่ๆไปติดต่อ" },
+            { title: "วันที่ใช้รถ"},
+            { title: "ออกเวลา" },
+            { title: "วันที่เข้า"},
+            { title: "เข้าเวลา" },
+            { title: "สถานะการขับ" },
+            { title: "อื่นๆ" },
+            { title: "สถานะการจอง" },
+            { title: "อนุมัติโดย" },
+            { title: 'Edit',
+              targets: 13,
+              data: null,
+              defaultContent: '<i class="fa-solid fa-pen-to-square fa-2xl" style="color: green; cursor: pointer;" data-toggle="modal" data-target="#editModal" onclick="editData(this);"></i>',
+            },
+          ],
+        });
+      });
+    });
+
+
+  function editData(element) {
+      var rowData = $(element).closest('tr').find('td').map(function() {
+        return $(this).text();
+      }).get();
+
+      var id = rowData[0];
+      var editNamebook = rowData[1];
+      var editDepbook = rowData[2];
+      //var editCarbook = rowData[3];
+      var editLocabook = rowData[4];
+      var editDateoutbook = rowData[5];
+      var editTimeoutbook = rowData[6];
+    var editDateinbook = rowData[7];
+      var editTimeinbook = rowData[8];
+      var editDrivebook = rowData[9];
+      var editOtherbook = rowData[10];
+      var editStatusbook = rowData[11];
+      var editApproverbook = rowData[12];
+      var editDateout = rowData[5];
+     
+
+      $('#editId').val(id); // แก้ไขตรงนี้ให้กำหนดค่า id ไม่ใช่ editedIdnum
+
+      $('#editNamebook').val(editNamebook);
+      $('#editDepbook').val(editDepbook);
+     // $('#editCarbook').val(editCarbook);
+      $('#editLocabook').val(editLocabook);
+      $('#editDateoutbook').val(editDateoutbook);
+      $('#editTimeoutbook').val(editTimeoutbook);
+      $('#editDateinbook').val(editDateinbook);
+      $('#editTimeinbook').val(editTimeinbook);
+      $('#editDrivebook').val(editDrivebook);
+      $('#editOtherbook').val(editOtherbook);
+     // $('#editStatusbook').val(editStatusbook);
+      $('#editApproverbook').val(editApproverbook);
+      $('#editDateout').val(editDateoutbook);
+
+      $('#editModal').modal('show');
+  }
+
+  function saveChangesToSpreadsheet(event) {
+      event.preventDefault(); // Prevent the default form submission
+      Swal.fire({
+          position: 'center',
+          title: '<h4>กำลังบันทึกข้อมูล...</h4>',
+          showConfirmButton: false,
+      })
+      Swal.showLoading();
+      var editedIdnum = $('#editId').val();
+      var editNamebook = $('#editNamebook').val();
+      var editDepbook = $('#editDepbook').val();
+      var editCarbook = $('#editCarbook').val();
+      var editLocabook = $('#editLocabook').val();
+      var editDateoutbook = $('#editDateoutbook').val();
+      var editTimeoutbook = $('#editTimeoutbook').val();
+    var editDateinbook = $('#editDateinbook').val();
+      var editTimeinbook = $('#editTimeinbook').val();
+      var editDrivebook = $('#editDrivebook').val();
+      var editOtherbook = $('#editOtherbook').val();
+      var editStatusbook = $('#editStatusbook').val();
+      var editApproverbook = $('#editApproverbook').val();
+      var editDateout = $('#editDateout').val();
+      var editTimeout = $('#editTimeout').val();
+      var editMileout = $('#editMileout').val();
+      var editDriver = $('#editDriver').val();
+      
+      if (editTimeout == "") {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: '<h4>กรุณากรอกเวลาออก</h4>',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+      });
+      return;
+    }  else if (editCarbook == "") {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: '<h4>กรุณากรอกทะเบียนรถที่ใช้</h4>',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+      });
+      return;
+    } else if (editMileout == "") {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: '<h4>กรุณากรอกเลขไมล์ออก</h4>',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+      });
+      return;
+    }  else if (editDriver == "") {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: '<h4>กรุณาระบุชื่อคนขับ</h4>',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+
+
+      // ในการเรียกใช้ AJAX request ควรใช้ idnum ที่เป็นตัวแปรที่ได้จากการคลิกแก้ไขข้อมูล ไม่ใช่จาก $(this)
+      var editId  = $('#editId').val();
+
+      $.ajax({
+          url: 'https://script.google.com/macros/s/AKfycby0jO4fOnWp2QJ--cStN6NNm4rhW-FYK0SRyCrlr7PrJMHRnKOuc-0DyXjwsu17-3FoVw/exec',
+          method: 'POST',
+          dataType: 'json',
+          data: {
+      
+
+        id: editedIdnum,
+        editNamebook: editNamebook,
+        editDepbook: editDepbook,
+        editCarbook: editCarbook,
+        editLocabook: editLocabook,
+        editDateoutbook: editDateoutbook,
+        editTimeoutbook: editTimeoutbook,
+        editDateinbook: editDateinbook,
+        editTimeinbook: editTimeinbook,
+        editDrivebook: editDrivebook,
+        editOtherbook: editOtherbook,
+        editStatusbook: editStatusbook,
+        editApproverbook: editApproverbook,
+        editDateout: editDateout,
+        editTimeout: editTimeout,
+        editMileout: editMileout,
+        editDriver: editDriver
+          },
+          success: function(response) {
+            console.log(response)
+            if (response == true) {
+             
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '<h4>บันทึกข้อมูลสำเร็จ</h4>',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+              location.reload();
+               document.getElementById("myFormsave").reset();
+            }
+          },
+          error: function(error) {
+              console.error('Error saving data:', error);
+          }
+      });
+
+      // Close the modal
+      $('#editModal').modal('hide');
+  }
+
+
 </script>
-       </body>
+  
+   
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+
+
 </html>
